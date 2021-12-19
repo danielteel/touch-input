@@ -32,14 +32,14 @@ export default function TouchInput({as, onChange, value, type, title, autoComple
         onSubmit: (e)=>e.preventDefault(),
         onPointerDown: (e)=>{
             if (e.pointerType!=='mouse' && type==='number'){
-                touchStartHere.current=true;setShowNumberPad(true);
+                touchStartHere.current=true;
             }
         },
         onPointerUp: (e)=>{
             if (e.pointerType!=='mouse' && type==='number'){
                 if (touchStartHere.current){
-                if (document.elementFromPoint(e.clientX, e.clientY)===e.target){
-                    setShowNumberPad(true);
+                    if (document.elementFromPoint(e.clientX, e.clientY)===e.target){
+                        setShowNumberPad(true);
                     }
                 }
                 touchStartHere.current=false;
