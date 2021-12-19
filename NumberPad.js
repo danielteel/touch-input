@@ -115,9 +115,15 @@ function redraw(canvasRef, workingValueRef, titleRef, whichTouchedRef){
 
     context.fillStyle = '#999999';
     context.fillRect(0, 0, rect.width, rect.height);
+
+    let whichTouchedRefElement = null;
+    if (whichTouchedRef.current){
+        whichTouchedRefElement = whichTouchedRef.current.element;
+    }
+
     for (const element of ui){
         if (element.type==="button"){
-            drawButton(context, rect, element.x, element.y, element.w, element.h, element.text, whichTouchedRef.current?.element===element?whichTouchedRef.current.pressed:false);
+            drawButton(context, rect, element.x, element.y, element.w, element.h, element.text, whichTouchedRefElement===element?whichTouchedRef.current.pressed:false);
         }else{
             drawText(context, rect, element.x, element.y, element.w, element.h, element.bgColor, element.color, element.id==='title'?titleRef.current:workingValueRef.current);
         }
@@ -318,19 +324,15 @@ export default function NumberPad({children, saveAndClose, initialValue, title, 
         }
     }
 
-    return (
-        <FullsizeCanvas 
-            ref={canvasRef}
-            style={{width: size.width, height: size.height}}
-            width={size.width}
-            height={size.height}
-            onTouchStart={touchDown}
-            onTouchMove={touchMove}
-            onTouchEnd={touchUp}
-            onClick={mouseClick}
-            onPointerDown={()=>enableClickRef.current=true}
-        >
-            Canvas not supported
-        </FullsizeCanvas>
-    );
+    return React.createElement(FullsizeCanvas, {
+            ref:canvasRef,
+            style:{width: size.width, height: size.height},
+            width:size.width,
+            height:size.height,
+            onTouchStart:touchDown,
+            onTouchMove:touchMove,
+            onTouchEnd:touchUp,
+            onClick:mouseClick,
+            onPointerDown:()=>enableClickRef.current=true,
+        },"Canvas not supported");
 }
