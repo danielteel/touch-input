@@ -14,7 +14,9 @@ export default function TouchInput({as, onChange, value, type, title, autoComple
 
     useEffect( () => {
         const handler = (e)=>{
-            if (e.pointerType!=='mouse' && type.toLowerCase().trim()==='number'){
+            let inputType = type;
+            if (typeof inputType!=='string') inputType='text';
+            if (e.pointerType!=='mouse' && inputType.trim().toLowerCase()==='number'){
                 lastTouchTimeRef.current = e.timeStamp;
             }
         }

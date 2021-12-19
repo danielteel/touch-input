@@ -1,7 +1,7 @@
 {
   "name": "@dteel/touch-input",
   "description": "touch-input makes number typed inputs display a fullscreen number pad for easy editing on mobile devices. When clicked with a mouse, nothing special happens, but if touch event of pen event, it displays a fullscreen numberpad. Component signature looks like, TouchInput({as, onChange, value, type, title, autoComplete, ...props}). The edit component is composed from as, this way you can use whatever fancy ui library you want. onChange is like a regular <input onChange> except no event is passed to it, just the new value. type can be any input type, but set it to number to get the real magic out of this library. title is the title to display on the numberpad if brought up.",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "TouchInput.js",
   "type": "module",
   "author": "Dan Teel",
