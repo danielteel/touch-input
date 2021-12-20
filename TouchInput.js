@@ -57,6 +57,7 @@ export default function TouchInput({as, onChange, value, type, title, autoComple
 
     const inputProps = {
         ...props,
+        key: '0',
         value,
         inputMode: type==='number'?'none':undefined,
         onSubmit: (e)=>e.preventDefault(),
@@ -125,6 +126,7 @@ export default function TouchInput({as, onChange, value, type, title, autoComple
 
     let numberPad = showNumberPad ? (
         React.createElement(NumberPad, {
+            key: '1',
             initialValue:value,
             title,
             saveAndClose:(newVal)=>{
@@ -141,7 +143,7 @@ export default function TouchInput({as, onChange, value, type, title, autoComple
         React.createElement(React.Fragment, {}, [
             numberPad,
             autoComplete==='off' ?
-                    React.createElement('form', {autoComplete: 'off'}, React.createElement(as, inputProps, null))
+                    React.createElement('form', {autoComplete: 'off', key:'2'}, React.createElement(as, inputProps, null))
                 :
                     React.createElement(as, inputProps, null)
         ])

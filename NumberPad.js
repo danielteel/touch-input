@@ -224,7 +224,6 @@ export default function NumberPad({children, saveAndClose, initialValue, title, 
     }
 
     const touchDown = (e) => {
-        console.log('touchDown');
         const rect=e.target.getBoundingClientRect();
         let mX=(e.touches[0].clientX-rect.x)/rect.width;
         let mY=(e.touches[0].clientY-rect.y)/rect.height;
@@ -241,7 +240,6 @@ export default function NumberPad({children, saveAndClose, initialValue, title, 
         redraw(canvasRef, workingValueRef, titleRef, whichTouchedRef);
     }
     const touchMove = (e) => {
-        console.log('touchMove');
         if (!whichTouchedRef.current) return;
 
         const rect=e.target.getBoundingClientRect();
@@ -279,7 +277,6 @@ export default function NumberPad({children, saveAndClose, initialValue, title, 
     }
 
     const touchUp = (e) => {
-        console.log("touchUp");
         e.preventDefault();
         if (!whichTouchedRef.current) return;
 
@@ -303,7 +300,6 @@ export default function NumberPad({children, saveAndClose, initialValue, title, 
     }
     const mouseClick = (e) => {
         if (enableClickRef.current===false) return;
-        console.log("mouseClick", e);
         const rect=e.target.getBoundingClientRect();
         const mX=(e.clientX-rect.x)/rect.width;
         const mY=(e.clientY-rect.y)/rect.height;
