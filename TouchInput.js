@@ -94,15 +94,17 @@ export default function TouchInput({as, onChange, value, type, title, autoComple
                     if (decCount>1){
                         let newValue='';
                         let selIndex = null;
+                        let selOffset=1;
                         for (const [index, newChar] of newInValue.split('').entries()){
                             if (newChar!==oldValue[index] && selIndex===null){
                                 selIndex=index;
                                 newValue+=newChar;
                             }else{
                                 if (newChar!=='.') newValue+=newChar;
+                                if (newChar==='.' && selIndex===null) selOffset=0;
                             }
                         }
-                        setTimeout( ()=>e.target.setSelectionRange(selIndex, selIndex), 0);
+                        setTimeout( ()=>{try{e.target.setSelectionRange(selIndex+selOffset, selIndex+selOffset)}catch{}}, 0);
                         e.target.value=newValue;
                     }
                 }
@@ -115,9 +117,9 @@ export default function TouchInput({as, onChange, value, type, title, autoComple
                             break;
                         }
                     }
-                    setTimeout( ()=>e.target.setSelectionRange(selIndex, selIndex), 0);
+                    setTimeout( ()=>{try{e.target.setSelectionRange(selIndex, selIndex)}catch{}}, 0);
                 }else if (oldValue[0]==='-' && e.target.value[0]!=='-'){
-                    setTimeout( ()=>e.target.setSelectionRange(1, 1), 0);
+                    setTimeout( ()=>{try{e.target.setSelectionRange(1, 1)}catch{}}, 0);
                 }
             }
             onChange(e.target.value)
