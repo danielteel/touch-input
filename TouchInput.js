@@ -1,7 +1,37 @@
 import React, {useRef, useState, useEffect} from 'react';
 import NumberPad from './NumberPad';
 
+function getNumberLiteral(text) {
+    if (typeof text!=="string") text=String(text);
+    if (text.length<1) return "";
+    let lookIndex=0;
+    let hasDec = false;
+    let num = "";
 
+    while (text[lookIndex]===" "){//Eat whitespace at front
+        lookIndex++;
+    }
+
+    const isDigit = (char) => (char && char.charCodeAt(0)>=48 && char.charCodeAt(0)<=57);
+
+    if (text[lookIndex]==='-'){//Only allow a minus in front of number
+        num="-";
+        lookIndex++;
+    }
+
+    while (text[lookIndex]!==undefined) {
+        if (isDigit(text[lookIndex])) {
+            num+=text[lookIndex];
+        }
+        if (text[lookIndex] === '.' && !hasDec) { //Only allow one decimal point
+            hasDec = true;
+            num+=text[lookIndex];
+        }
+        lookIndex++;
+    }
+
+    return num;
+}
 
 export default function TouchInput({as, onChange, value, type, title, autoComplete, ...props}){
     const touchStartHere = useRef(false);
@@ -51,7 +81,46 @@ export default function TouchInput({as, onChange, value, type, title, autoComple
                 e.target.blur();
             }
         },
-        onChange: (e)=>onChange(e.target.value),
+        onChange: (e)=>{
+            if (type==='number'){
+                const oldValue = value;
+                const newInValue=e.target.value;
+                let decCount=0;
+                if (newInValue.length > oldValue.length){
+                    for (const newChar of newInValue){
+                        if (newChar==='.') decCount++;
+                    }
+                    if (decCount>1){
+                        let newValue='';
+                        let selIndex = null;
+                        for (const [index, newChar] of newInValue.split('').entries()){
+                            if (newChar!==oldValue[index] && selIndex===null){
+                                selIndex=index;
+                                newValue+=newChar;
+                            }else{
+                                if (newChar!=='.') newValue+=newChar;
+                            }
+                        }
+                        setTimeout( ()=>e.target.setSelectionRange(selIndex, selIndex), 0);
+                        e.target.value=newValue;
+                    }
+                }
+                e.target.value=getNumberLiteral(e.target.value);
+                if (oldValue===e.target.value){
+                    let selIndex=null;
+                    for (const [index, newChar] of newInValue.split('').entries()){
+                        if (newChar!==oldValue[index]){
+                            selIndex=index;
+                            break;
+                        }
+                    }
+                    setTimeout( ()=>e.target.setSelectionRange(selIndex, selIndex), 0);
+                }else if (oldValue[0]==='-' && e.target.value[0]!=='-'){
+                    setTimeout( ()=>e.target.setSelectionRange(1, 1), 0);
+                }
+            }
+            onChange(e.target.value)
+        },
     };
 
     let numberPad = showNumberPad ? (
