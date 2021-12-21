@@ -119,10 +119,14 @@ export default function TouchInput({as, onChange, value, type, title, autoComple
                     }
                     setTimeout( ()=>{try{e.target.setSelectionRange(selIndex, selIndex)}catch{}}, 0);
                 }else if (oldValue[0]==='-' && e.target.value[0]!=='-'){
-                    if (oldValue.length <= e.target.value.length){
+                    if (oldValue.length === e.target.value.length){
                         setTimeout( ()=>{try{e.target.setSelectionRange(1, 1)}catch{}}, 0);
                     }else{
-                        setTimeout( ()=>{try{e.target.setSelectionRange(0, 0)}catch{}}, 0);
+                        if (e.target.value.length===1){
+                            setTimeout( ()=>{try{e.target.setSelectionRange(1, 1)}catch{}}, 0);
+                        }else{
+                            setTimeout( ()=>{try{e.target.setSelectionRange(0, 0)}catch{}}, 0);
+                        }
                     }
                 }
             }
